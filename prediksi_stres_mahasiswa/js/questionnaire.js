@@ -246,10 +246,11 @@ function selectOption(button) {
     answers[question.id] = value;
 
     // Update UI
+    // Update UI
     const allButtons = questionContainer.querySelectorAll('.option-button');
     allButtons.forEach(btn => {
         // Reset to unselected state
-        btn.classList.remove('bg-indigo-50 dark:bg-indigo-500/20', 'border-indigo-500', 'text-indigo-700', 'dark:text-white');
+        btn.classList.remove('bg-indigo-50', 'dark:bg-indigo-500/20', 'border-indigo-500', 'text-indigo-700', 'dark:text-white');
         // Handle legacy classes safely just in case
         btn.classList.remove('bg-indigo-500/20', 'text-white');
 

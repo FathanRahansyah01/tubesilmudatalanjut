@@ -202,6 +202,7 @@ def predict():
             "level": label,
             "score": score,
             "probability": proba,
+            "derived_features": processed_data,
             "mock": False
         })
         

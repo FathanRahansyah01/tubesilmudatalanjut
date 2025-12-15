@@ -70,34 +70,47 @@ function displayResults() {
     }
 
     // Generate SHAP factors (top contributing factors)
-    generateShapFactors(categoryScores);
+    // Use derived_features if available (from API), otherwise fallback or empty
+    const derivedFeatures = resultData.derived_features || resultData.answers; // Fallback to raw answers if derived features missing
+    generateShapFactors(derivedFeatures);
 
     // Generate recommendations
     generateRecommendations(categoryScores, stressLevel);
 }
 
-// Generate SHAP factors display
-function generateShapFactors(categoryScores) {
-    if (!categoryScores) return;
+// Generate Factors display (Using specific features requested)
+function generateShapFactors(derivedFeatures) {
+    if (!derivedFeatures) return;
 
-    // Sort categories by score (highest first)
-    const sortedCategories = Object.entries(categoryScores)
-        .sort((a, b) => b[1] - a[1])
+    // List of specific features to show
+    const targetFeatures = [
+        'Academic_Stress_Score', 'Tekanan_Akademik', 'Kesulitan_Akumulasi',
+        'Stres_Tugas_Deadline', 'Tekanan_Eksternal', 'Kurang_Kendali',
+        'Rasa_Tidak_Sanggup', 'Stres_Pribadi', 'Marah_Eksternal_Studi',
+        'Stres_Perubahan_Akademik', 'Tekanan_IPK', 'Cemas_Karir',
+        'Kebiasaan_Buruk', 'Proses_Sesuai_Harapan', 'Academic_Confidence_Score'
+    ];
+
+    // Filter and sort features
+    const sortedFeatures = targetFeatures
+        .filter(key => derivedFeatures[key] !== undefined)
+        .map(key => ({
+            key: key,
+            value: Number(derivedFeatures[key]),
+            displayName: key.replace(/_/g, ' ') // Simple formatting
+        }))
+        .sort((a, b) => b.value - a.value)
         .slice(0, 5); // Top 5 factors
 
-    const factorNames = {
-        'Akademik': 'Academic Stress Score',
-        'Keuangan': 'Financial Stress',
-        'Sosial': 'Social Pressure',
-        'Kesehatan': 'Health & Lifestyle',
-        'Psikologis': 'Psychological Stress',
-        'Masa Depan': 'Future Anxiety'
-    };
-
     let html = '';
-    sortedCategories.forEach(([category, score], index) => {
-        const displayName = factorNames[category] || category;
-        const impact = score > 66 ? 'High' : score > 33 ? 'Medium' : 'Low';
+    sortedFeatures.forEach((factor, index) => {
+        let impact = 'Low';
+        let normalizedScore = factor.value;
+
+        // Normalize for display context if needed (most are 1-5, scores are likely 1-5 or similar)
+        if (factor.value > 3.5) impact = 'High';
+        else if (factor.value > 2.5) impact = 'Medium';
+
         const rankBadge = `Rank #${index + 1}`;
 
         html += `
@@ -105,9 +118,9 @@ function generateShapFactors(categoryScores) {
                 <div class="flex-1">
                     <div class="flex items-center gap-3 mb-1">
                         <span class="text-xs font-semibold px-2 py-1 bg-indigo-600 text-white rounded">${rankBadge}</span>
-                        <h4 class="font-semibold text-white">${displayName}</h4>
+                        <h4 class="font-semibold text-white">${factor.displayName}</h4>
                     </div>
-                    <p class="text-sm text-gray-400">Impact: ${(score / 100).toFixed(4)}</p>
+                    <p class="text-sm text-gray-400">Value: ${factor.value.toFixed(2)} (${impact})</p>
                 </div>
             </div>
         `;
