@@ -1,287 +1,172 @@
 // Questionnaire Data
 const questions = [
-    // Akademik (7 questions)
+    // 1. Tekanan Akademik
     {
-        id: 1,
+        id: 'Tekanan_Akademik',
         category: 'Akademik',
-        question: 'Berapa banyak mata kuliah yang Anda ambil semester ini?',
+        question: 'Seberapa besar tekanan akademik yang Anda rasakan saat ini?',
         options: [
-            { text: '1-3 mata kuliah', value: 1 },
-            { text: '4-6 mata kuliah', value: 2 },
-            { text: '7-9 mata kuliah', value: 3 },
-            { text: '10 atau lebih mata kuliah', value: 4 }
+            { text: 'Sangat Rendah', value: 1 },
+            { text: 'Rendah', value: 2 },
+            { text: 'Sedang', value: 3 },
+            { text: 'Tinggi', value: 4 },
+            { text: 'Sangat Tinggi', value: 5 }
         ]
     },
+    // 2. Kesulitan Akumulasi (Akademik)
     {
-        id: 2,
+        id: 'Kesulitan_Akumulasi',
         category: 'Akademik',
-        question: 'Berapa IPK Anda saat ini?',
+        question: 'Seberapa sulit materi perkuliahan yang menumpuk bagi Anda?',
         options: [
-            { text: '3.50 - 4.00', value: 1 },
-            { text: '3.00 - 3.49', value: 2 },
-            { text: '2.50 - 2.99', value: 3 },
-            { text: 'Di bawah 2.50', value: 4 }
+            { text: 'Sangat Mudah', value: 1 },
+            { text: 'Mudah', value: 2 },
+            { text: 'Biasa Saja', value: 3 },
+            { text: 'Sulit', value: 4 },
+            { text: 'Sangat Sulit', value: 5 }
         ]
     },
+    // 3. Stres Tugas Deadline (Akademik)
     {
-        id: 3,
+        id: 'Stres_Tugas_Deadline',
         category: 'Akademik',
-        question: 'Seberapa sering Anda merasa kewalahan dengan tugas kuliah?',
+        question: 'Seberapa sering Anda merasa stres karena deadline tugas?',
         options: [
-            { text: 'Tidak pernah', value: 1 },
-            { text: 'Jarang (1-2 kali per bulan)', value: 2 },
-            { text: 'Sering (1-2 kali per minggu)', value: 3 },
-            { text: 'Sangat sering (hampir setiap hari)', value: 4 }
-        ]
-    },
-    {
-        id: 4,
-        category: 'Akademik',
-        question: 'Apakah Anda sering begadang untuk menyelesaikan tugas?',
-        options: [
-            { text: 'Tidak pernah', value: 1 },
-            { text: 'Jarang (1-2 kali per bulan)', value: 2 },
-            { text: 'Sering (1-2 kali per minggu)', value: 3 },
-            { text: 'Sangat sering (hampir setiap hari)', value: 4 }
-        ]
-    },
-    {
-        id: 5,
-        category: 'Akademik',
-        question: 'Seberapa sulit materi kuliah yang Anda pelajari?',
-        options: [
-            { text: 'Sangat mudah dipahami', value: 1 },
-            { text: 'Cukup mudah', value: 2 },
-            { text: 'Cukup sulit', value: 3 },
-            { text: 'Sangat sulit', value: 4 }
-        ]
-    },
-    {
-        id: 6,
-        category: 'Akademik',
-        question: 'Seberapa sering Anda merasa tidak siap saat ujian?',
-        options: [
-            { text: 'Tidak pernah', value: 1 },
+            { text: 'Tidak Pernah', value: 1 },
             { text: 'Jarang', value: 2 },
-            { text: 'Sering', value: 3 },
-            { text: 'Selalu', value: 4 }
+            { text: 'Kadang-kadang', value: 3 },
+            { text: 'Sering', value: 4 },
+            { text: 'Selalu', value: 5 }
         ]
     },
+    // 4. Tekanan Eksternal (Sosial)
     {
-        id: 7,
+        id: 'Tekanan_Eksternal',
+        category: 'Sosial',
+        question: 'Seberapa besar tekanan dari luar (orang tua/dosen) yang Anda rasakan?',
+        options: [
+            { text: 'Tidak Ada', value: 1 },
+            { text: 'Sedikit', value: 2 },
+            { text: 'Sedang', value: 3 },
+            { text: 'Besar', value: 4 },
+            { text: 'Sangat Besar', value: 5 }
+        ]
+    },
+    // 5. Kurang Kendali (Psikologis)
+    {
+        id: 'Kurang_Kendali',
+        category: 'Psikologis',
+        question: 'Apakah Anda merasa kurang memiliki kendali atas hidup/studi Anda?',
+        options: [
+            { text: 'Sangat Memegang Kendali', value: 1 },
+            { text: 'Cukup Memegang Kendali', value: 2 },
+            { text: 'Netral', value: 3 },
+            { text: 'Kurang Kendali', value: 4 },
+            { text: 'Tidak Ada Kendali', value: 5 }
+        ]
+    },
+    // 6. Rasa Tidak Sanggup (Psikologis)
+    {
+        id: 'Rasa_Tidak_Sanggup',
+        category: 'Psikologis',
+        question: 'Seberapa sering Anda merasa tidak sanggup menjalani perkuliahan?',
+        options: [
+            { text: 'Tidak Pernah', value: 1 },
+            { text: 'Jarang', value: 2 },
+            { text: 'Kadang-kadang', value: 3 },
+            { text: 'Sering', value: 4 },
+            { text: 'Selalu', value: 5 }
+        ]
+    },
+    // 7. Stres Pribadi (Psikologis)
+    {
+        id: 'Stres_Pribadi',
+        category: 'Psikologis',
+        question: 'Seberapa tinggi tingkat stres pribadi (di luar akademik) Anda?',
+        options: [
+            { text: 'Sangat Rendah', value: 1 },
+            { text: 'Rendah', value: 2 },
+            { text: 'Sedang', value: 3 },
+            { text: 'Tinggi', value: 4 },
+            { text: 'Sangat Tinggi', value: 5 }
+        ]
+    },
+    // 8. Marah Eksternal Studi (Emosional -> Psikologis)
+    {
+        id: 'Marah_Eksternal_Studi',
+        category: 'Psikologis',
+        question: 'Seberapa sering Anda merasa marah atau kesal dengan hal-hal terkait studi?',
+        options: [
+            { text: 'Tidak Pernah', value: 1 },
+            { text: 'Jarang', value: 2 },
+            { text: 'Kadang-kadang', value: 3 },
+            { text: 'Sering', value: 4 },
+            { text: 'Selalu', value: 5 }
+        ]
+    },
+    // 9. Stres Perubahan Akademik (Akademik)
+    {
+        id: 'Stres_Perubahan_Akademik',
         category: 'Akademik',
-        question: 'Apakah Anda merasa tertekan dengan ekspektasi nilai?',
+        question: 'Apakah Anda merasa stres dengan perubahan sistem/jadwal akademik?',
         options: [
-            { text: 'Tidak sama sekali', value: 1 },
-            { text: 'Sedikit tertekan', value: 2 },
-            { text: 'Cukup tertekan', value: 3 },
-            { text: 'Sangat tertekan', value: 4 }
+            { text: 'Sangat Tidak Stres', value: 1 },
+            { text: 'Tidak Stres', value: 2 },
+            { text: 'Biasa Saja', value: 3 },
+            { text: 'Stres', value: 4 },
+            { text: 'Sangat Stres', value: 5 }
         ]
     },
-
-    // Keuangan (4 questions)
+    // 10. Tekanan IPK (Akademik)
     {
-        id: 8,
-        category: 'Keuangan',
-        question: 'Apakah Anda memiliki masalah keuangan untuk memenuhi kebutuhan kuliah?',
+        id: 'Tekanan_IPK',
+        category: 'Akademik',
+        question: 'Seberapa tertekan Anda dengan target IPK?',
         options: [
-            { text: 'Tidak ada masalah', value: 1 },
-            { text: 'Kadang-kadang', value: 2 },
-            { text: 'Sering', value: 3 },
-            { text: 'Selalu kesulitan', value: 4 }
+            { text: 'Tidak Tertekan', value: 1 },
+            { text: 'Sedikit Tertekan', value: 2 },
+            { text: 'Cukup Tertekan', value: 3 },
+            { text: 'Sangat Tertekan', value: 4 },
+            { text: 'Ekstrem', value: 5 }
         ]
     },
+    // 11. Cemas Karir (Masa Depan)
     {
-        id: 9,
-        category: 'Keuangan',
-        question: 'Apakah Anda bekerja sambil kuliah?',
+        id: 'Cemas_Karir',
+        category: 'Masa Depan',
+        question: 'Seberapa cemas Anda memikirkan karir masa depan?',
         options: [
-            { text: 'Tidak bekerja', value: 1 },
-            { text: 'Part-time ringan (< 10 jam/minggu)', value: 2 },
-            { text: 'Part-time (10-20 jam/minggu)', value: 3 },
-            { text: 'Full-time atau lebih dari 20 jam/minggu', value: 4 }
+            { text: 'Tidak Cemas', value: 1 },
+            { text: 'Sedikit Cemas', value: 2 },
+            { text: 'Sedang', value: 3 },
+            { text: 'Cemas', value: 4 },
+            { text: 'Sangat Cemas', value: 5 }
         ]
     },
+    // 12. Kebiasaan Buruk (Kesehatan)
     {
-        id: 10,
-        category: 'Keuangan',
-        question: 'Seberapa sering Anda khawatir tentang biaya kuliah/hidup?',
+        id: 'Kebiasaan_Buruk',
+        category: 'Kesehatan',
+        question: 'Seberapa sering Anda melakukan kebiasaan buruk (begadang, makan tidak teratur)?',
         options: [
-            { text: 'Tidak pernah', value: 1 },
+            { text: 'Tidak Pernah', value: 1 },
             { text: 'Jarang', value: 2 },
-            { text: 'Sering', value: 3 },
-            { text: 'Sangat sering', value: 4 }
+            { text: 'Kadang-kadang', value: 3 },
+            { text: 'Sering', value: 4 },
+            { text: 'Selalu', value: 5 }
         ]
     },
+    // 13. Proses Sesuai Harapan (Masa Depan)
     {
-        id: 11,
-        category: 'Keuangan',
-        question: 'Apakah Anda memiliki tabungan untuk keadaan darurat?',
+        id: 'Proses_Sesuai_Harapan',
+        category: 'Masa Depan',
+        question: 'Apakah Anda merasa proses perkuliahan berjalan sesuai harapan Anda?',
         options: [
-            { text: 'Ya, cukup untuk beberapa bulan', value: 1 },
-            { text: 'Ya, untuk 1 bulan', value: 2 },
-            { text: 'Sangat sedikit', value: 3 },
-            { text: 'Tidak ada sama sekali', value: 4 }
-        ]
-    },
-
-    // Sosial & Lingkungan (5 questions)
-    {
-        id: 12,
-        category: 'Sosial',
-        question: 'Seberapa baik hubungan Anda dengan teman sekelas?',
-        options: [
-            { text: 'Sangat baik, banyak teman dekat', value: 1 },
-            { text: 'Baik, ada beberapa teman', value: 2 },
-            { text: 'Kurang baik, sedikit teman', value: 3 },
-            { text: 'Buruk, hampir tidak ada teman', value: 4 }
-        ]
-    },
-    {
-        id: 13,
-        category: 'Sosial',
-        question: 'Apakah Anda tinggal jauh dari keluarga?',
-        options: [
-            { text: 'Tinggal bersama keluarga', value: 1 },
-            { text: 'Dekat, bisa pulang setiap hari', value: 1 },
-            { text: 'Cukup jauh, pulang seminggu sekali', value: 3 },
-            { text: 'Sangat jauh, jarang pulang', value: 4 }
-        ]
-    },
-    {
-        id: 14,
-        category: 'Sosial',
-        question: 'Seberapa sering Anda merasa kesepian?',
-        options: [
-            { text: 'Tidak pernah', value: 1 },
-            { text: 'Jarang', value: 2 },
-            { text: 'Sering', value: 3 },
-            { text: 'Sangat sering', value: 4 }
-        ]
-    },
-    {
-        id: 15,
-        category: 'Sosial',
-        question: 'Apakah Anda aktif dalam organisasi kampus?',
-        options: [
-            { text: 'Sangat aktif di beberapa organisasi', value: 1 },
-            { text: 'Aktif di satu organisasi', value: 2 },
-            { text: 'Pernah ikut tapi tidak aktif', value: 3 },
-            { text: 'Tidak ikut organisasi sama sekali', value: 2 }
-        ]
-    },
-    {
-        id: 16,
-        category: 'Sosial',
-        question: 'Apakah Anda merasa didukung oleh orang-orang di sekitar Anda?',
-        options: [
-            { text: 'Sangat didukung', value: 1 },
-            { text: 'Cukup didukung', value: 2 },
-            { text: 'Kurang didukung', value: 3 },
-            { text: 'Tidak didukung sama sekali', value: 4 }
-        ]
-    },
-
-    // Kesehatan & Gaya Hidup (5 questions)
-    {
-        id: 17,
-        category: 'Kesehatan',
-        question: 'Berapa jam Anda tidur rata-rata per hari?',
-        options: [
-            { text: '7-9 jam', value: 1 },
-            { text: '6-7 jam', value: 2 },
-            { text: '4-6 jam', value: 3 },
-            { text: 'Kurang dari 4 jam', value: 4 }
-        ]
-    },
-    {
-        id: 18,
-        category: 'Kesehatan',
-        question: 'Seberapa sering Anda berolahraga dalam seminggu?',
-        options: [
-            { text: '4 kali atau lebih', value: 1 },
-            { text: '2-3 kali', value: 2 },
-            { text: '1 kali', value: 3 },
-            { text: 'Tidak pernah', value: 4 }
-        ]
-    },
-    {
-        id: 19,
-        category: 'Kesehatan',
-        question: 'Apakah Anda memiliki pola makan yang teratur?',
-        options: [
-            { text: 'Sangat teratur, 3 kali sehari', value: 1 },
-            { text: 'Cukup teratur', value: 2 },
-            { text: 'Tidak teratur', value: 3 },
-            { text: 'Sangat tidak teratur, sering skip makan', value: 4 }
-        ]
-    },
-    {
-        id: 20,
-        category: 'Kesehatan',
-        question: 'Seberapa sering Anda merasa lelah/kelelahan?',
-        options: [
-            { text: 'Jarang', value: 1 },
-            { text: 'Kadang-kadang', value: 2 },
-            { text: 'Sering', value: 3 },
-            { text: 'Hampir setiap hari', value: 4 }
-        ]
-    },
-    {
-        id: 21,
-        category: 'Kesehatan',
-        question: 'Apakah Anda memiliki masalah kesehatan kronis?',
-        options: [
-            { text: 'Tidak ada', value: 1 },
-            { text: 'Ada, tapi terkontrol', value: 2 },
-            { text: 'Ada, kadang mengganggu', value: 3 },
-            { text: 'Ada, sangat mengganggu', value: 4 }
-        ]
-    },
-
-    // Psikologis (4 questions)
-    {
-        id: 22,
-        category: 'Psikologis',
-        question: 'Seberapa sering Anda merasa cemas/anxious?',
-        options: [
-            { text: 'Jarang', value: 1 },
-            { text: 'Kadang-kadang', value: 2 },
-            { text: 'Sering', value: 3 },
-            { text: 'Hampir setiap hari', value: 4 }
-        ]
-    },
-    {
-        id: 23,
-        category: 'Psikologis',
-        question: 'Apakah Anda mudah tersinggung atau marah akhir-akhir ini?',
-        options: [
-            { text: 'Tidak', value: 1 },
-            { text: 'Kadang-kadang', value: 2 },
-            { text: 'Sering', value: 3 },
-            { text: 'Sangat sering', value: 4 }
-        ]
-    },
-    {
-        id: 24,
-        category: 'Psikologis',
-        question: 'Seberapa sulit bagi Anda untuk berkonsentrasi?',
-        options: [
-            { text: 'Tidak sulit', value: 1 },
-            { text: 'Kadang sulit', value: 2 },
-            { text: 'Sering sulit', value: 3 },
-            { text: 'Sangat sulit', value: 4 }
-        ]
-    },
-    {
-        id: 25,
-        category: 'Psikologis',
-        question: 'Apakah Anda merasa memiliki dukungan emosional yang cukup?',
-        options: [
-            { text: 'Sangat cukup', value: 1 },
-            { text: 'Cukup', value: 2 },
-            { text: 'Kurang', value: 3 },
-            { text: 'Sangat kurang', value: 4 }
+            { text: 'Sangat Tidak Sesuai', value: 1 },
+            { text: 'Tidak Sesuai', value: 2 },
+            { text: 'Netral', value: 3 },
+            { text: 'Sesuai', value: 4 },
+            { text: 'Sangat Sesuai', value: 5 }
         ]
     }
 ];
@@ -301,15 +186,14 @@ const nextBtn = document.getElementById('nextBtn');
 function init() {
     // Load saved progress if exists
     const savedAnswers = utils.getFromStorage('questionnaire_answers');
-    const savedProgress = utils.getFromStorage('questionnaire_progress');
+    // const savedProgress = utils.getFromStorage('questionnaire_progress');
 
     if (savedAnswers) {
         answers = savedAnswers;
     }
 
-    if (savedProgress) {
-        currentQuestion = savedProgress;
-    }
+    // Always start from beginning for simplicity in this updated version, or reimplement storage check with validation
+    currentQuestion = 0;
 
     renderQuestion();
 }
@@ -319,12 +203,15 @@ function renderQuestion() {
     const question = questions[currentQuestion];
 
     questionContainer.innerHTML = `
-        <div class="question-card">
-            <span class="question-category">${question.category}</span>
-            <h2 class="question-text">${question.question}</h2>
-            <div class="question-options">
+        <div class="bg-gray-100 dark:bg-gray-700/30 rounded-xl p-8 mb-6 transition-colors duration-300">
+            <span class="inline-block px-4 py-1 bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 rounded-full text-sm font-semibold mb-4">${question.category}</span>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">${question.question}</h2>
+            <div class="space-y-3">
                 ${question.options.map((option, index) => `
-                    <button class="option-button ${answers[question.id] === option.value ? 'selected' : ''}" 
+                    <button class="option-button w-full text-left px-6 py-4 rounded-lg transition-all duration-200 border-2 hover:border-indigo-500 
+                        ${answers[question.id] === option.value
+            ? 'bg-indigo-50 dark:bg-indigo-500/20 border-indigo-500 text-indigo-700 dark:text-white'
+            : 'bg-white dark:bg-gray-600/30 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600/50 hover:text-gray-900 dark:hover:text-white'}" 
                             data-value="${option.value}"
                             data-index="${index}">
                         ${option.text}
@@ -340,7 +227,7 @@ function renderQuestion() {
     progressText.textContent = `Pertanyaan ${currentQuestion + 1} dari ${questions.length}`;
 
     // Update buttons
-    prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+    prevBtn.style.display = currentQuestion > 0 ? 'inline-flex' : 'none';
     nextBtn.textContent = currentQuestion === questions.length - 1 ? 'Lihat Hasil' : 'Selanjutnya';
 
     // Add event listeners to options
@@ -360,19 +247,29 @@ function selectOption(button) {
 
     // Update UI
     const allButtons = questionContainer.querySelectorAll('.option-button');
-    allButtons.forEach(btn => btn.classList.remove('selected'));
-    button.classList.add('selected');
+    allButtons.forEach(btn => {
+        // Reset to unselected state
+        btn.classList.remove('bg-indigo-50 dark:bg-indigo-500/20', 'border-indigo-500', 'text-indigo-700', 'dark:text-white');
+        // Handle legacy classes safely just in case
+        btn.classList.remove('bg-indigo-500/20', 'text-white');
+
+        btn.classList.add('bg-white', 'dark:bg-gray-600/30', 'border-gray-200', 'dark:border-gray-600', 'text-gray-700', 'dark:text-gray-200', 'hover:bg-gray-50', 'dark:hover:bg-gray-600/50', 'hover:text-gray-900', 'dark:hover:text-white');
+    });
+
+    // Set selected state
+    button.classList.remove('bg-white', 'dark:bg-gray-600/30', 'border-gray-200', 'dark:border-gray-600', 'text-gray-700', 'dark:text-gray-200', 'hover:bg-gray-50', 'dark:hover:bg-gray-600/50', 'hover:text-gray-900', 'dark:hover:text-white');
+    button.classList.add('bg-indigo-50', 'dark:bg-indigo-500/20', 'border-indigo-500', 'text-indigo-700', 'dark:text-white');
+
+    // Enable next button
+    const nextBtn = document.getElementById('nextBtn');
+    if (nextBtn) {
+        nextBtn.disabled = false;
+        nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
 
     // Save progress
     utils.saveToStorage('questionnaire_answers', answers);
-    utils.saveToStorage('questionnaire_progress', currentQuestion);
-
-    // Auto advance after short delay
-    setTimeout(() => {
-        if (currentQuestion < questions.length - 1) {
-            nextQuestion();
-        }
-    }, 300);
+    // utils.saveToStorage('questionnaire_progress', currentQuestion);
 }
 
 // Next question
@@ -403,14 +300,15 @@ function prevQuestion() {
 
 // Submit questionnaire
 function submitQuestionnaire() {
-    // Calculate scores by category
-    const categoryScores = {
-        'Akademik': [],
-        'Keuangan': [],
-        'Sosial': [],
-        'Kesehatan': [],
-        'Psikologis': []
-    };
+    // Calculate scores by category (for visualization)
+    const categoryScores = {};
+
+    // Initialize categories found in questions
+    questions.forEach(q => {
+        if (!categoryScores[q.category]) {
+            categoryScores[q.category] = [];
+        }
+    });
 
     questions.forEach(q => {
         const answer = answers[q.id];
@@ -425,37 +323,85 @@ function submitQuestionnaire() {
 
     Object.keys(categoryScores).forEach(category => {
         const scores = categoryScores[category];
-        const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
-        const normalized = ((avg - 1) / 3) * 100; // Convert 1-4 scale to 0-100
-        results[category] = Math.round(normalized);
-        totalScore += normalized;
+        if (scores.length > 0) {
+            const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+            const normalized = ((avg - 1) / 4) * 100; // Convert 1-5 scale to 0-100
+            results[category] = Math.round(normalized);
+            totalScore += normalized;
+        }
     });
 
-    const overallScore = Math.round(totalScore / Object.keys(results).length);
+    // Call API for Model Prediction
+    const submitBtn = document.getElementById('nextBtn'); // Re-use next button as indicator
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Memproses...';
+    submitBtn.disabled = true;
 
-    // Save results
-    const resultData = {
-        id: utils.generateId(),
-        date: new Date().toISOString(),
-        overallScore: overallScore,
-        categoryScores: results,
-        answers: answers
-    };
+    fetch('predict_api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(answers),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert('Terjadi kesalahan: ' + data.error);
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                return;
+            }
 
-    // Save to history
-    let history = utils.getFromStorage('stress_history') || [];
-    history.push(resultData);
-    utils.saveToStorage('stress_history', history);
+            // Handle array response
+            const prediction = Array.isArray(data) ? data[0] : data;
 
-    // Save current result
-    utils.saveToStorage('current_result', resultData);
+            if (!prediction || (typeof prediction !== 'object')) {
+                console.error("Invalid Data:", data);
+                alert('Format respon tidak valid');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                return;
+            }
 
-    // Clear questionnaire progress
-    localStorage.removeItem('questionnaire_answers');
-    localStorage.removeItem('questionnaire_progress');
+            if (prediction.mock) {
+                console.log("Using Mock Prediction: " + prediction.message);
+            }
 
-    // Redirect to results
-    window.location.href = 'predict_manual.php';
+            // Save results
+            const resultData = {
+                id: utils.generateId(),
+                date: new Date().toISOString(),
+                faculty: localStorage.getItem('selectedFaculty') || 'Unknown',
+                facultyName: localStorage.getItem('selectedFacultyName') || 'Unknown',
+                model: localStorage.getItem('selectedModel') || 'voting',
+                overallScore: prediction.score, // Use score from model
+                level: prediction.level,        // Use level from model
+                probability: prediction.probability || null, // Add probability distribution
+                categoryScores: results,        // Use JS calculated breakdown for chart
+                answers: answers
+            };
+
+            // Save to history
+            let history = utils.getFromStorage('stress_history') || [];
+            history.push(resultData);
+            utils.saveToStorage('stress_history', history);
+
+            // Save current result
+            utils.saveToStorage('current_result', resultData);
+
+            // Clear questionnaire progress
+            localStorage.removeItem('questionnaire_answers');
+
+            // Redirect to results
+            window.location.href = 'predict_manual.php';
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Gagal menghubungkan ke server.');
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        });
 }
 
 // Event listeners

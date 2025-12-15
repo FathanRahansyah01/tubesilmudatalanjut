@@ -6,173 +6,171 @@ if (!resultData) {
 }
 
 // DOM Elements
-const scoreCircle = document.getElementById('scoreCircle');
-const scoreValue = document.getElementById('scoreValue');
-const scoreLabel = document.getElementById('scoreLabel');
-const scoreDescription = document.getElementById('scoreDescription');
+const stressLevelBanner = document.getElementById('stressLevelBanner');
+const stressLevelText = document.getElementById('stressLevelText');
+const predictionDate = document.getElementById('predictionDate');
+const probHigh = document.getElementById('probHigh');
+const probLow = document.getElementById('probLow');
+const probMedium = document.getElementById('probMedium');
+const barHigh = document.getElementById('barHigh');
+const barLow = document.getElementById('barLow');
+const barMedium = document.getElementById('barMedium');
+const shapFactors = document.getElementById('shapFactors');
 const recommendationsList = document.getElementById('recommendationsList');
 
 // Display results
 function displayResults() {
-    const { overallScore, categoryScores } = resultData;
-    const stressLevel = utils.calculateStressLevel(overallScore);
+    const { overallScore, categoryScores, probability, date, level } = resultData;
+    const stressLevel = level || utils.calculateStressLevel(overallScore).level;
 
-    // Animate score
-    animateScore(0, overallScore, 1500);
-
-    // Update score display
-    scoreCircle.style.background = `conic-gradient(${stressLevel.color} ${overallScore * 3.6}deg, rgba(255,255,255,0.1) 0deg)`;
-    scoreLabel.textContent = `Tingkat Stres: ${stressLevel.level}`;
-    scoreLabel.style.color = stressLevel.color;
-
-    // Description based on level
-    const descriptions = {
-        'Rendah': 'Tingkat stres Anda berada dalam kategori rendah. Anda mengelola stres dengan baik!',
-        'Sedang': 'Tingkat stres Anda berada dalam kategori sedang. Perhatikan beberapa area yang perlu diperbaiki.',
-        'Tinggi': 'Tingkat stres Anda berada dalam kategori tinggi. Sangat disarankan untuk mencari bantuan profesional.'
-    };
-    scoreDescription.textContent = descriptions[stressLevel.level];
-
-    // Create radar chart
-    createRadarChart(categoryScores);
-
-    // Generate recommendations
-    generateRecommendations(categoryScores, stressLevel.level);
-}
-
-// Animate score counter
-function animateScore(start, end, duration) {
-    const startTime = performance.now();
-
-    function update(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-
-        const current = Math.floor(start + (end - start) * progress);
-        scoreValue.textContent = current;
-
-        if (progress < 1) {
-            requestAnimationFrame(update);
-        }
+    // Set date
+    if (date) {
+        const d = new Date(date);
+        predictionDate.textContent = `${d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })} ${d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}`;
     }
 
-    requestAnimationFrame(update);
+    // Update stress level banner
+    stressLevelText.textContent = `Tingkat Stres: ${stressLevel}`;
+
+    // Set banner color based on stress level
+    if (stressLevel === 'Tinggi' || stressLevel === 'High') {
+        stressLevelBanner.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
+        stressLevelBanner.style.borderColor = 'rgb(239, 68, 68)';
+        stressLevelBanner.style.border = '2px solid';
+        stressLevelText.style.color = 'rgb(248, 113, 113)';
+    } else if (stressLevel === 'Sedang' || stressLevel === 'Medium') {
+        stressLevelBanner.style.backgroundColor = 'rgba(245, 158, 11, 0.2)';
+        stressLevelBanner.style.borderColor = 'rgb(245, 158, 11)';
+        stressLevelBanner.style.border = '2px solid';
+        stressLevelText.style.color = 'rgb(251, 191, 36)';
+    } else {
+        stressLevelBanner.style.backgroundColor = 'rgba(16, 185, 129, 0.2)';
+        stressLevelBanner.style.borderColor = 'rgb(16, 185, 129)';
+        stressLevelBanner.style.border = '2px solid';
+        stressLevelText.style.color = 'rgb(52, 211, 153)';
+    }
+
+    // Update probability distribution
+    if (probability && probability.length === 3) {
+        // probability = [rendah, sedang, tinggi]
+        const probRendah = (probability[0] * 100).toFixed(1);
+        const probSedang = (probability[1] * 100).toFixed(1);
+        const probTinggi = (probability[2] * 100).toFixed(1);
+
+        probLow.textContent = probRendah + '%';
+        probMedium.textContent = probSedang + '%';
+        probHigh.textContent = probTinggi + '%';
+
+        // Animate bars
+        setTimeout(() => {
+            barLow.style.width = probRendah + '%';
+            barMedium.style.width = probSedang + '%';
+            barHigh.style.width = probTinggi + '%';
+        }, 100);
+    }
+
+    // Generate SHAP factors (top contributing factors)
+    generateShapFactors(categoryScores);
+
+    // Generate recommendations
+    generateRecommendations(categoryScores, stressLevel);
 }
 
-// Create radar chart
-function createRadarChart(categoryScores) {
-    const ctx = document.getElementById('radarChart').getContext('2d');
+// Generate SHAP factors display
+function generateShapFactors(categoryScores) {
+    if (!categoryScores) return;
 
-    const data = {
-        labels: Object.keys(categoryScores),
-        datasets: [{
-            label: 'Tingkat Stres per Kategori',
-            data: Object.values(categoryScores),
-            fill: true,
-            backgroundColor: 'rgba(102, 126, 234, 0.2)',
-            borderColor: 'rgb(102, 126, 234)',
-            pointBackgroundColor: 'rgb(102, 126, 234)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgb(102, 126, 234)'
-        }]
+    // Sort categories by score (highest first)
+    const sortedCategories = Object.entries(categoryScores)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5); // Top 5 factors
+
+    const factorNames = {
+        'Akademik': 'Academic Stress Score',
+        'Keuangan': 'Financial Stress',
+        'Sosial': 'Social Pressure',
+        'Kesehatan': 'Health & Lifestyle',
+        'Psikologis': 'Psychological Stress',
+        'Masa Depan': 'Future Anxiety'
     };
 
-    const config = {
-        type: 'radar',
-        data: data,
-        options: {
-            elements: {
-                line: {
-                    borderWidth: 3
-                }
-            },
-            scales: {
-                r: {
-                    angleLines: {
-                        color: 'rgba(255, 255, 255, 0.1)'
-                    },
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
-                    },
-                    pointLabels: {
-                        color: '#b4bcd0',
-                        font: {
-                            size: 14,
-                            family: 'Inter'
-                        }
-                    },
-                    ticks: {
-                        color: '#8892a6',
-                        backdropColor: 'transparent'
-                    },
-                    suggestedMin: 0,
-                    suggestedMax: 100
-                }
-            },
-            plugins: {
-                legend: {
-                    labels: {
-                        color: '#b4bcd0',
-                        font: {
-                            size: 14,
-                            family: 'Inter'
-                        }
-                    }
-                }
-            }
-        }
-    };
+    let html = '';
+    sortedCategories.forEach(([category, score], index) => {
+        const displayName = factorNames[category] || category;
+        const impact = score > 66 ? 'High' : score > 33 ? 'Medium' : 'Low';
+        const rankBadge = `Rank #${index + 1}`;
 
-    new Chart(ctx, config);
+        html += `
+            <div class="flex items-center justify-between p-4 bg-gray-700/30 rounded-lg border border-gray-600/50">
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-1">
+                        <span class="text-xs font-semibold px-2 py-1 bg-indigo-600 text-white rounded">${rankBadge}</span>
+                        <h4 class="font-semibold text-white">${displayName}</h4>
+                    </div>
+                    <p class="text-sm text-gray-400">Impact: ${(score / 100).toFixed(4)}</p>
+                </div>
+            </div>
+        `;
+    });
+
+    shapFactors.innerHTML = html;
 }
 
 // Generate recommendations
 function generateRecommendations(categoryScores, stressLevel) {
     const recommendations = {
         'Akademik': {
-            title: 'Manajemen Akademik',
+            title: 'Beban Akademik & Studi',
             tips: [
-                'Buat jadwal belajar yang terstruktur dan realistis',
-                'Gunakan teknik Pomodoro untuk meningkatkan fokus',
-                'Jangan ragu untuk meminta bantuan dosen atau tutor',
+                'Buat jadwal belajar yang terstruktur dengan teknik Time Blocking',
+                'Gunakan teknik Pomodoro (25 menit fokus, 5 menit istirahat)',
+                'Konsultasi dengan dosen pembimbing jika mengalami kesulitan materi',
                 'Prioritaskan tugas berdasarkan deadline dan tingkat kesulitan'
             ]
         },
         'Keuangan': {
             title: 'Manajemen Keuangan',
             tips: [
-                'Buat budget bulanan dan catat semua pengeluaran',
-                'Cari beasiswa atau program bantuan keuangan',
-                'Pertimbangkan part-time job yang fleksibel',
-                'Hindari pengeluaran impulsif dan prioritaskan kebutuhan'
+                'Buat pencatatan arus kas (pemasukan vs pengeluaran) harian',
+                'Cari informasi beasiswa atau bantuan finansial kampus',
+                'Kurangi pengeluaran gaya hidup yang tidak mendesak',
+                'Pertimbangkan kerja paruh waktu yang tidak mengganggu kuliah'
             ]
         },
         'Sosial': {
-            title: 'Kehidupan Sosial',
+            title: 'Interaksi Sosial & Dukungan',
             tips: [
-                'Luangkan waktu untuk bersosialisasi dengan teman',
-                'Ikut komunitas atau organisasi yang sesuai minat',
-                'Jaga komunikasi dengan keluarga secara rutin',
-                'Jangan ragu untuk berbagi perasaan dengan orang terdekat'
+                'Komunikasikan batasan (boundaries) dengan tegas namun sopan',
+                'Carilah teman bicara atau support system yang positif',
+                'Jangan ragu menolak ajakan yang mengganggu waktu istirahat',
+                'Ikuti kegiatan komunitas positif untuk memperluas relasi'
             ]
         },
         'Kesehatan': {
-            title: 'Kesehatan & Gaya Hidup',
+            title: 'Pola Hidup & Kesehatan Fisik',
             tips: [
-                'Usahakan tidur 7-9 jam setiap malam',
-                'Olahraga minimal 30 menit, 3x seminggu',
-                'Konsumsi makanan bergizi dan minum air yang cukup',
-                'Hindari begadang dan atur pola makan yang teratur'
+                'Prioritaskan tidur 7-8 jam sehari untuk pemulihan kognitif',
+                'Lakukan olahraga ringan minimal 15 menit setiap hari',
+                'Kurangi konsumsi kafein dan gula berlebih',
+                'Perbaiki pola makan dengan gizi seimbang'
             ]
         },
         'Psikologis': {
-            title: 'Kesehatan Mental',
+            title: 'Kesehatan Mental & Emosional',
             tips: [
-                'Praktikkan teknik relaksasi seperti meditasi atau deep breathing',
-                'Luangkan waktu untuk hobi dan aktivitas yang menyenangkan',
-                'Jangan ragu untuk konsultasi dengan psikolog jika diperlukan',
-                'Hindari overthinking dan fokus pada hal yang bisa dikontrol'
+                'Praktikkan mindfulness atau meditasi 10 menit sehari',
+                'Lakukan detoks media sosial 1 jam sebelum tidur',
+                'Tulis jurnal harian untuk meluapkan emosi (journaling)',
+                'Segera hubungi konselor jika merasa kewalahan terus-menerus'
+            ]
+        },
+        'Masa Depan': {
+            title: 'Kecemasan Masa Depan (Karir)',
+            tips: [
+                'Fokus pada apa yang bisa dikontrol hari ini, bukan "gimana nanti"',
+                'Konsultasi dengan unit pengembangan karir di kampus',
+                'Mulai bangun portofolio skill sedikit demi sedikit',
+                'Ingat bahwa setiap orang punya timeline sukses yang berbeda'
             ]
         }
     };
@@ -184,32 +182,40 @@ function generateRecommendations(categoryScores, stressLevel) {
 
     let html = '';
 
-    // General recommendation based on stress level
-    if (stressLevel === 'Tinggi') {
-        html += `
-            <div class="recommendation-item" style="border-left-color: #ef4444;">
-                <h4>⚠️ Perhatian Khusus</h4>
-                <p>Tingkat stres Anda cukup tinggi. Sangat disarankan untuk:</p>
-                <ul>
-                    <li>Konsultasi dengan psikolog atau konselor kampus</li>
-                    <li>Hubungi layanan kesehatan mental: 119 ext 8 (Hotline Kesehatan Mental)</li>
-                    <li>Ceritakan kondisi Anda kepada orang terdekat</li>
-                </ul>
-            </div>
-        `;
-    }
+    // Add specific header description
+    html += `<p class="text-gray-300 mb-6 text-sm">Berikut adalah rekomendasi yang dipersonalisasi berdasarkan 3 faktor utama yang paling berkontribusi terhadap tingkat stres Anda:</p>`;
 
     // Category-specific recommendations
-    sortedCategories.forEach(([category, score]) => {
+    sortedCategories.forEach(([category, score], index) => {
         const rec = recommendations[category];
-        const color = score > 66 ? '#ef4444' : score > 33 ? '#f59e0b' : '#10b981';
+        if (!rec) return;
+
+        // Emoji numbering
+        const emojis = ['1️⃣', '2️⃣', '3️⃣'];
+        const num = emojis[index] || '•';
+
+        // Define color based on priority
+        const titleColor = index === 0 ? 'text-indigo-400' : 'text-white';
 
         html += `
-            <div class="recommendation-item" style="border-left-color: ${color};">
-                <h4>${rec.title} (Skor: ${score})</h4>
-                <ul>
-                    ${rec.tips.slice(0, 3).map(tip => `<li>${tip}</li>`).join('')}
-                </ul>
+            <div class="mb-6 p-4 bg-gray-800/50 rounded-xl border border-gray-700/50 hover:border-indigo-500/30 transition-colors">
+                <h4 class="${titleColor} font-bold text-lg mb-3 flex items-center">
+                    <span class="text-2xl mr-3">${num}</span>
+                    ${rec.title}
+                    <span class="ml-auto text-xs font-normal px-2 py-1 bg-gray-700 rounded text-gray-400">Impact: ${(score / 100).toFixed(2)}</span>
+                </h4>
+                <div class="ml-10">
+                    <ul class="space-y-2">
+                        ${rec.tips.map(tip => `
+                            <li class="flex items-start text-sm text-gray-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2 mt-0.5 flex-shrink-0 text-green-400">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                ${tip}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
             </div>
         `;
     });

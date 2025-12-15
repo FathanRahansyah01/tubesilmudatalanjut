@@ -1,19 +1,51 @@
 // Theme Toggle
 const themeToggle = document.getElementById('themeToggle');
 const html = document.documentElement;
+const sunIcon = document.querySelector('.sun-icon');
+const moonIcon = document.querySelector('.moon-icon');
 
 // Load saved theme or default to dark
 const savedTheme = localStorage.getItem('theme') || 'dark';
-html.setAttribute('data-theme', savedTheme);
+if (savedTheme === 'light') {
+    html.classList.remove('dark');
+    html.style.colorScheme = 'light';
+    document.body.classList.remove('bg-gray-900', 'text-white');
+    document.body.classList.add('bg-gray-50', 'text-gray-900');
+    if (sunIcon) sunIcon.classList.add('hidden');
+    if (moonIcon) moonIcon.classList.remove('hidden');
+} else {
+    html.classList.add('dark');
+    html.style.colorScheme = 'dark';
+    document.body.classList.remove('bg-gray-50', 'text-gray-900');
+    document.body.classList.add('bg-gray-900', 'text-white');
+    if (sunIcon) sunIcon.classList.remove('hidden');
+    if (moonIcon) moonIcon.classList.add('hidden');
+}
 
 // Toggle theme
 if (themeToggle) {
     themeToggle.addEventListener('click', () => {
-        const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        const isDark = html.classList.contains('dark');
 
-        html.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+        if (isDark) {
+            // Switch to light mode
+            html.classList.remove('dark');
+            html.style.colorScheme = 'light';
+            document.body.classList.remove('bg-gray-900', 'text-white');
+            document.body.classList.add('bg-gray-50', 'text-gray-900');
+            localStorage.setItem('theme', 'light');
+            if (sunIcon) sunIcon.classList.add('hidden');
+            if (moonIcon) moonIcon.classList.remove('hidden');
+        } else {
+            // Switch to dark mode
+            html.classList.add('dark');
+            html.style.colorScheme = 'dark';
+            document.body.classList.remove('bg-gray-50', 'text-gray-900');
+            document.body.classList.add('bg-gray-900', 'text-white');
+            localStorage.setItem('theme', 'dark');
+            if (sunIcon) sunIcon.classList.remove('hidden');
+            if (moonIcon) moonIcon.classList.add('hidden');
+        }
 
         // Add animation
         themeToggle.style.transform = 'rotate(360deg)';
